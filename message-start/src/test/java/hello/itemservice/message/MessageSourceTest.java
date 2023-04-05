@@ -6,6 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 
+import java.util.Locale;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -25,5 +27,33 @@ public class MessageSourceTest {
   void notFoundMessageCode() {
     assertThatThrownBy(() -> ms.getMessage("no_code", null, null))
       .isInstanceOf(NoSuchMessageException.class);
+  }
+
+  @Test
+  void notFoundMessageCodeDefaultMessage() {
+    String result = ms.getMessage("no_code", null, "기본 메시지", null);
+    assertThat(result).isEqualTo("기본 메시지");
+  }
+
+  @Test
+  void argumentMessage() {
+    String result = ms.getMessage("hello.name", new Object[]{"Spring"}, null);
+    assertThat(result).isEqualTo("안녕 Spring");
+  }
+
+  @Test
+  void defaultLang() {
+    String result = ms.getMessage("hello", null, null);
+    String result2 = ms.getMessage("hello", null, Locale.KOREA);  // _ko가 없으므로 기본
+    assertThat(result).isEqualTo("안녕");
+    assertThat(result2).isEqualTo("안녕");
+  }
+
+  @Test
+  void enLang() {
+    String result = ms.getMessage("hello", null, null);
+    String result2 = ms.getMessage("hello", null, Locale.ENGLISH);  // _ko가 없으므로 기본
+    assertThat(result).isEqualTo("안녕");
+    assertThat(result2).isEqualTo("hello");
   }
 }
