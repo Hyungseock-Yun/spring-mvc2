@@ -1,14 +1,11 @@
 package hello.typeconverter.formatter;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
-import java.util.Locale;
 
-import static java.util.Locale.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static java.util.Locale.KOREA;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class MyNumberFormatterTest {
 
@@ -25,4 +22,5 @@ class MyNumberFormatterTest {
     String result = formatter.print(1000, KOREA);
     assertThat(result).isEqualTo("1,000");
   }
+
 }
